@@ -27,6 +27,8 @@ dist
 
 # Local python packages
 .python_packages/
+**/*.js
+**/*.js.map
 
 # Python Environments
 .env
