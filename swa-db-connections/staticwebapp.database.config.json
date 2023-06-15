@@ -30,7 +30,7 @@
   },
   "entities": {
     "Game": {
-      "source": "guessinggame",
+      "source": "game",
       "permissions": [
         {
           "actions": ["*"],
