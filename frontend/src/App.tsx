@@ -32,9 +32,15 @@ const getUser = async (): Promise<ClientPrincipal> => {
   return result?.clientPrincipal;
 }
 
+const xxx = async (): Promise<void> => {
+  const response = await fetch('/api/message');
+  const result = await response.json();
+  console.log(result);
+}
+await xxx();
 interface ClientPrincipal {
-    userId: string;
-    userDetails: string;
+  userId: string;
+  userDetails: string;
 }
 
 const Login: Component = () => {
@@ -49,9 +55,11 @@ const App: Component = () => {
   return (
     <Switch fallback={<Login />}>
       <Match when={user() !== null}>
-        <p>Hello {user()?.userDetails}. This is game {gameId()}</p>
+        <p>Hello {user()?.userDetails}!</p>
+        <p>This is game {gameId()}.</p>
+        <p>But <button onClick={() => newGame()}>click here</button> to start a new game</p>
         <p>Please select a number between 1 and {N}</p>
-        <button onClick={() => newGame()}>Click here to start a new game</button>
+        <input type="number"/>
       </Match>
     </Switch>
     // <div class={styles.App}>
