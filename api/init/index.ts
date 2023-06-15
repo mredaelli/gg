@@ -22,7 +22,7 @@ const httpTrigger: AzureFunction = async (
     game: Game
 ): Promise<void> => {
     context.log("triggered")
-    context.res = resp(game.id)
+    context.res = { "body": JSON.stringify(game) }
 };
 
 export default httpTrigger;

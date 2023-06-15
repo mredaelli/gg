@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": [ "get" ],
-      "route": "api/init"
+      "route": "init"
     },
     {
       "type": "http",
@@ -15,9 +15,10 @@
     },
     {
       "type": "sql",
-      "direction": "out",
+      "direction": "in",
       "name": "game",
-      "commandText": "insert into Game (userid) values ('me')",
+      "commandText": "select * from Game where id = 1",
+      "commandType": "Text",
       "connectionStringSetting": "SqlConnectionString"
     }
   ]
