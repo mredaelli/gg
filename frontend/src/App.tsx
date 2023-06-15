@@ -5,8 +5,6 @@ import { UUID } from './models';
 
 const N = 10000;
 
-const endpoint = '/data-api/rest/game';
-
 const randomInt = (N: number): number => Math.floor(Math.random() * N) + 1;
 
 let x = 1;
@@ -28,17 +26,30 @@ const createGame = async (): Promise<number> => {
   x = x + 1;
   return x;
 }
+const getUser = async (): Promise<ClientPrincipal> => {
+  const response = await fetch('/.auth/me');
+  const result = await response.json();
+  return result?.clientPrincipal;
+}
 
+interface ClientPrincipal {
+    userId: string;
+    userDetails: string;
+}
 
+const Login: Component = () => {
+  return <div>
+    Login with <a href="/.auth/login/aad">Azure</a>
+  </div>
+}
 const App: Component = () => {
-  // const [game, setGame] = createSignal<UUID | null>(null);
-  // const [guesses, setGuesses] = createSignal<[number] | null>(null);
   const [gameId, { refetch: newGame }] = createResource(createGame);
+  const [user] = createResource<ClientPrincipal>(getUser);
 
   return (
-    <Switch fallback={<p>is between 5 and 10</p>}>
-      <Match when={null === null}>
-        <p>This is game {gameId()}</p>
+    <Switch fallback={<Login />}>
+      <Match when={user() !== null}>
+        <p>Hello {user()?.userDetails}. This is game {gameId()}</p>
         <p>Please select a number between 1 and {N}</p>
         <button onClick={() => newGame()}>Click here to start a new game</button>
       </Match>
