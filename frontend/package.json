@@ -1,0 +1,13 @@
+{
+  "name": "guessing-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx esbuild src/index.ts --bundle --minify --outdir=public/js",
+    "compile": "tsc src/index.ts --noEmit",
+    "serve": "npx esbuild src/index.ts --bundle --outdir=public/js --servedir=public --watch --define:process.env.API=\\\"http://localhost:7071/api\\\""
+  },
+  "author": "Massimo Redaelli",
+  "license": "ISC"
+}
