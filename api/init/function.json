@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": [ "get" ],
-      "route": "init"
+      "route": "api/init"
     },
     {
       "type": "http",
