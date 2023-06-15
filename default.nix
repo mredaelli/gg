@@ -9,6 +9,7 @@ with stable; mkShell {
     azure-cli
     terraform
     azure-functions-core-tools
+    mono
     nodePackages.typescript-language-server
     node
   ];

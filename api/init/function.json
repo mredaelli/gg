@@ -17,8 +17,8 @@
       "type": "sql",
       "direction": "out",
       "name": "game",
-      "commandText": "Game",
-      "connectionStringSetting": "guessinggamedb_cs"
+    "commandText": "insert into Game (userid) values ('me')",
+    "connectionStringSetting": "SqlConnectionString"
     }
   ]
 }
