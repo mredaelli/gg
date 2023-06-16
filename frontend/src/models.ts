@@ -1,12 +1,8 @@
-export type UUID = string;
-
-export interface GameInit {
-  id: UUID;
+export type GuessResponse = 'right-ho' | 'go lower' | 'go higher';
+export interface ClientPrincipal {
   userId: string;
-  number: number;
+  userDetails: string;
 }
-export interface Game extends GameInit {
-  created_at: Date;
-  modified_at: Date;
-  tries: number;
-}
+
+export type PastGuess = { guess: number; response: GuessResponse };
+export const N = 10000;

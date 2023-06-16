@@ -1,62 +1,34 @@
-import { Component, createResource, Match, Switch } from 'solid-js';
+import { Component, createResource, Show } from 'solid-js';
+import { createGame, getUser } from './api';
 
-// import styles from './App.module.css';
+import styles from './App.module.css';
+import { Game } from './Game';
+import { ClientPrincipal } from './models';
 
-const N = 10000;
-
-const createGame = async (): Promise<number> => {
-  const endpoint = `/data-api/rest/game/`;
-  const response = await fetch(endpoint, {
-    method: 'PUT',
-  });
-  const result = await response.json();
-  console.table(result.value);
-  return result.value;
-};
-
-const getUser = async (): Promise<ClientPrincipal> => {
-  const response = await fetch('/.auth/me');
-  const result = await response.json();
-  return result?.clientPrincipal;
-};
-
-interface ClientPrincipal {
-  userId: string;
-  userDetails: string;
-}
-
-const Login: Component = () => {
-  return (
-    <div>
-      Login with <a href="/.auth/login/aad">Azure</a>
-    </div>
-  );
-};
+const Login: Component = () => (
+  <header class={styles.header}>
+    Login with <a href="/.auth/login/aad">Azure</a>
+  </header>
+);
 
 const App: Component = () => {
-  const [gameId, { refetch: newGame }] = createResource(createGame);
   const [user] = createResource<ClientPrincipal>(getUser);
+  const [gameId, { refetch: newGame }] = createResource<number>(createGame);
 
   return (
-    <Switch fallback={<Login />}>
-      <Match when={user() !== null}>
-        <p>Hello {user()?.userDetails}!</p>
-        <p>This is game {gameId()}.</p>
-        <p>
-          But <button onClick={() => newGame()}>click here</button> to start a
-          new game
-        </p>
-        <p>Please select a number between 1 and {N}</p>
-        <input type="number" />
-      </Match>
-    </Switch>
-    // <div class={styles.App}>
-    //   <header class={styles.header}>
-    //     <p>
-    //       Click to start a new game
-    //     </p>
-    //   </header>
-    // </div>
+    <div class={styles.App}>
+      <Show when={user() !== null} fallback={<Login />}>
+        <p class={styles.welcome}>Hello {user()?.userDetails}!</p>
+        <Show when={gameId() !== undefined}>
+          <Game gameId={gameId() || 0} />
+          <hr class={styles.sep} />
+          <div>
+            <button onClick={() => newGame()}>Click here</button> to start a new
+            game
+          </div>
+        </Show>
+      </Show>
+    </div>
   );
 };
 
