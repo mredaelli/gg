@@ -2,10 +2,10 @@
   "version": "2.0",
   "logging": {
     "console": {
-      "isEnabled": false,
+      "isEnabled": false
     },
     "logLevel": {
-      "default": "debug",
+      "default": "debug"
     },
     "applicationInsights": {
       "samplingSettings": {
