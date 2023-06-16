@@ -3,7 +3,7 @@ import { FunctionContext, Game, resp } from '../common';
 
 
 const httpTrigger: AzureFunction = async (
-    context: FunctionContext<{ game: Game, updatedGame: Game }>,
+    context: FunctionContext<{ game: Game, updatedGame: string }>,
     req: HttpRequest,
     game: Game
 ): Promise<void> => {
@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async (
             updatedGame = { ...updatedGame, done_at: new Date() }
             context.res = resp("right-ho")
         }
-        context.bindings.updatedGame = updatedGame
+        context.bindings.updatedGame = JSON.stringify(updatedGame)
     }
 };
 

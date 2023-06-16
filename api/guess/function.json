@@ -26,8 +26,7 @@
       "type": "sql",
       "direction": "out",
       "name": "updatedGame",
-      "commandText": "update Game set tries = @tries, done_at = @done_at where id = @id",
-      "commandType": "Text",
+      "commandText": "Game",
       "connectionStringSetting": "SqlConnectionString"
     }
   ]
