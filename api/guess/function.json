@@ -5,8 +5,8 @@
       "type": "httpTrigger",
       "direction": "in",
       "name": "req",
-      "methods": [ "post" ],
-      "route": "guess/{gameId}"
+      "methods": [ "get", "post" ],
+      "route": "guess/{id:int}"
     },
     {
       "type": "http",
@@ -16,16 +16,16 @@
     {
       "type": "sql",
       "direction": "in",
-      "name": "gameId",
+      "name": "game",
       "commandText": "select * from Game where id = @Id",
       "commandType": "Text",
-      "parameters": "@Id = {route.gameId}",
+      "parameters": "@Id = {id}",
       "connectionStringSetting": "SqlConnectionString"
     },
     {
       "type": "sql",
       "direction": "out",
-      "name": "updated_game",
+      "name": "updatedGame",
       "commandText": "update Game set tries = @tries, done_at = @done_at where id = @id",
       "commandType": "Text",
       "connectionStringSetting": "SqlConnectionString"
