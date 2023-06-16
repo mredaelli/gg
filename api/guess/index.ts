@@ -3,7 +3,7 @@ import { FunctionContext, Game, resp } from '../common';
 
 
 const httpTrigger: AzureFunction = async (
-    context: FunctionContext<{ game: Game, updatedGame: string }>,
+    context: FunctionContext<{ game: Game, updatedGame: Game }>,
     req: HttpRequest,
     game: Game
 ): Promise<void> => {
@@ -20,16 +20,16 @@ const httpTrigger: AzureFunction = async (
     else if (!Number.isInteger(guessedValue)) {
         context.res = resp("The guess should be an integer", 400);
     } else {
-        let updatedGame = { ...game, tries: game.tries + 1 }
+        let updatedGame = { ...game, tries: (game.tries || 0) + 1 }
         if (guessedValue > game.number) {
             context.res = resp("go lower")
         } else if (guessedValue < game.number) {
             context.res = resp("go higher")
         } else {
-            updatedGame = { ...updatedGame, done_at: new Date() }
+            updatedGame = { ...updatedGame, done_at: new Date().toISOString() }
             context.res = resp("right-ho")
         }
-        context.bindings.updatedGame = JSON.stringify(updatedGame)
+        context.bindings.updatedGame = updatedGame
     }
 };
 

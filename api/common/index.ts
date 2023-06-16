@@ -22,7 +22,7 @@ export interface Game extends GameId {
   id: number;
   userId: string;
   number: number;
-  created_at: Date;
+  created_at: string;
   tries: number;
-  done_at: Date | null;
+  done_at: string | null;
 }
