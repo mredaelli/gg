@@ -16,7 +16,7 @@
     {
       "type": "sql",
       "direction": "in",
-      "name": "game",
+      "name": "games",
       "commandText": "select * from Game where id = @Id",
       "commandType": "Text",
       "parameters": "@Id = {id}",
