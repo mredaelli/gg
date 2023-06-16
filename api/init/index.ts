@@ -1,13 +1,13 @@
 import { AzureFunction, HttpRequest } from "@azure/functions";
-import { FunctionContext, resp } from '../common';
+import { GameId, FunctionContext, resp } from '../common';
 
 
 const httpTrigger: AzureFunction = async (
     context: FunctionContext<{ gameId: number }>,
     req: HttpRequest,
-    gameId: number
+    game: GameId[]
 ): Promise<void> => {
-    context.res = resp(gameId)
+    context.res = resp(game[0].id)
 };
 
 export default httpTrigger;
