@@ -5,6 +5,7 @@ export const resp = (body: any, status: number = 200) => ({
   body: JSON.stringify(body),
   mimetype: 'application/json',
 });
+export type HttpResponse = ReturnType<typeof resp>
 
 export interface FunctionContext<Bindings = void> extends Context {
   bindings: Bindings;
