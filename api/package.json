@@ -10,12 +10,10 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@azure/functions": "^3.0.0",
     "@types/node": "16.x",
-    "@types/uuid": "^9.0.2",
     "azure-functions-core-tools": "^4.x",
     "typescript": "^4.0.0"
   }

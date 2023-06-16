@@ -1,28 +1,13 @@
-import {
-    AzureFunction,
-    Context,
-    HttpRequest,
-} from "@azure/functions";
-import { Game } from '../common/models';
+import { AzureFunction, HttpRequest } from "@azure/functions";
+import { FunctionContext, resp } from '../common';
 
-const resp = (body: string, status: number = 200) => ({ status, body });
 
-interface FunctionContext extends Context {
-    bindings: {
-        game: Game
-    }
-    res: {
-        status?: number
-        body: string
-    }
-}
 const httpTrigger: AzureFunction = async (
-    context: FunctionContext,
+    context: FunctionContext<{ gameId: number }>,
     req: HttpRequest,
-    game: Game
+    gameId: number
 ): Promise<void> => {
-    context.log("triggered")
-    context.res = { "body": JSON.stringify(game) }
+    context.res = resp(gameId)
 };
 
 export default httpTrigger;

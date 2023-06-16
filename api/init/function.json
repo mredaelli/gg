@@ -17,7 +17,7 @@
       "type": "sql",
       "direction": "in",
       "name": "game",
-      "commandText": "select * from Game where id = 1",
+      "commandText": "insert into Game (userid) OUTPUT Inserted.id values ('me')",
       "commandType": "Text",
       "connectionStringSetting": "SqlConnectionString"
     }
