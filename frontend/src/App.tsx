@@ -7,7 +7,15 @@ import { ClientPrincipal } from './models';
 
 const Login: Component = () => (
   <header class={styles.header}>
-    Login with <a href="/.auth/login/aad">Azure</a>
+    <p>Login with</p>
+    <ul>
+      <li><a href="/.auth/login/aad">Azure</a></li>
+      <li><a href="/.auth/login/facebook">Facebook</a></li>
+      <li><a href="/.auth/login/twitter">Twitter</a></li>
+      <li><a href="/.auth/login/github">GitHub</a></li>
+      <li><a href="/.auth/login/google">Google</a></li>
+      <li><a href="/.auth/login/apple">Apple</a></li>
+    </ul>
   </header>
 );
 
