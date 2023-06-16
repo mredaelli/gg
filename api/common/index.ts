@@ -64,7 +64,7 @@ export interface GameId {
 }
 export interface Game extends GameId {
   id: number;
-  userId: string;
+  userid: string;
   number: number;
   created_at: string;
   tries: number;

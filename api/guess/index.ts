@@ -36,7 +36,7 @@ const getGuess = (req: HttpRequest): number => {
 const impl = (req: HttpRequest, bindings: In) => {
   const userid = getUser(req);
   const game = getGame(bindings.games);
-  if (game.userId !== userid) {
+  if (game.userid !== userid) {
     throw new PoorMansControlFlow('Nice try', 401);
   }
 
