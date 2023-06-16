@@ -1,13 +1,19 @@
 import { AzureFunction, HttpRequest } from "@azure/functions";
-import { GameId, FunctionContext, resp } from '../common';
+import { GameId, FunctionContext, resp, Game } from '../common';
 
 
 const httpTrigger: AzureFunction = async (
-    context: FunctionContext<{ gameId: number }>,
+    context: FunctionContext<{ games: Game, updatedGame: string }>,
     req: HttpRequest,
-    game: GameId[]
+    games: GameId[]
 ): Promise<void> => {
-    context.res = resp(game[0].id)
+    const userid = req.headers['x-ms-client-principal-name'];
+    if (!userid || userid == "") {
+        context.res = resp("", 401)
+    }
+    const game = games[0]
+    context.res = resp({id: game.id, user: userid})
+    context.bindings.updatedGame = JSON.stringify({ ...game, userid: userid })
 };
 
 export default httpTrigger;

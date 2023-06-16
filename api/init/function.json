@@ -16,9 +16,16 @@
     {
       "type": "sql",
       "direction": "in",
-      "name": "game",
-      "commandText": "insert into Game (userid) OUTPUT Inserted.id values ('me')",
+      "name": "games",
+      "commandText": "insert into Game (userid) OUTPUT Inserted.id values ('')",
       "commandType": "Text",
+      "connectionStringSetting": "SqlConnectionString"
+    },
+    {
+      "type": "sql",
+      "direction": "out",
+      "name": "updatedGame",
+      "commandText": "Game",
       "connectionStringSetting": "SqlConnectionString"
     }
   ]

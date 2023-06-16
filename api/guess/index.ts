@@ -3,7 +3,7 @@ import { FunctionContext, Game, resp } from '../common';
 
 
 const httpTrigger: AzureFunction = async (
-    context: FunctionContext<{ game: Game, updatedGame: string }>,
+    context: FunctionContext<{ games: Game, updatedGame: string }>,
     req: HttpRequest,
     games: Game[]
 ): Promise<void> => {
