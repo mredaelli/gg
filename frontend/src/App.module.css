@@ -39,6 +39,17 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.header a {
+  color: white;
+}
+
+.header a:visited {
+  color: yellow;
+}
+.header ul {
+  list-style-type: none;
+  padding: 0;
+}
 
 .link {
   color: #b318f0;

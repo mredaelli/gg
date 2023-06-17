@@ -1,16 +1,16 @@
 import {
   Component,
-  createEffect,
   createResource,
   createSignal,
   For,
   Match,
   Switch,
 } from 'solid-js';
+import { SetStoreFunction } from 'solid-js/store';
 import { sendGuess } from './api';
 
 import styles from './App.module.css';
-import { N, PastGuess } from './models';
+import { Game, N, PastGuess, State } from './models';
 
 const DataList: Component = () => (
   <datalist id="markers">
@@ -34,40 +34,35 @@ const History: Component<{ guesses: PastGuess[] }> = (props) => (
   </div>
 );
 
-export const Game: Component<{ gameId: number }> = (props) => {
-  const [done, setDone] = createSignal<boolean>(false);
-
+export const GameComponent: Component<{
+  game: Game;
+  setStore: SetStoreFunction<State>;
+}> = (props) => {
   const [currentGuess, setCurrentGuess] = createSignal<number>(
     Math.floor(N / 2),
   );
-  const [guesses, setGuesses] = createSignal<PastGuess[]>([]);
+  const [guessEnabled, setGuessEnabled] = createSignal<boolean>(false);
 
-  createEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _ = props.gameId;
-    setGn(undefined);
-    setDone(false);
-    setCurrentGuess(Math.floor(N / 2));
-    setGuesses([]);
-  });
-
-  const guessRespFetch = async (): Promise<void> => {
-    const guess = currentGuess();
-    const response = await sendGuess(props.gameId, guess);
-    setGuesses([...guesses(), { guess, response }]);
+  const guessRespFetch = async (guess: number): Promise<void> => {
+    const response = await sendGuess(props.game.id, guess);
+    props.setStore('game', 'pastGuesses', (pg) => [...pg, { guess, response }]);
     if (response === 'right-ho') {
-      setDone(true);
+      props.setStore('game', 'done', true);
     }
   };
-  const [gn, setGn] = createSignal<number | undefined>();
-  const submitGuess = () => setGn((gn() || 0) + 1);
-  createResource(gn, guessRespFetch);
+  const [_, { refetch }] = createResource(guessEnabled, () =>
+    guessRespFetch(currentGuess()),
+  );
+  const submitGuess = () => {
+    setGuessEnabled(true);
+    refetch();
+  };
 
   return (
     <div>
-      <p>This is game n. {props.gameId}.</p>
+      <p>This is game n. {props.game.id}.</p>
       <Switch fallback={<p>Done!</p>}>
-        <Match when={!done()}>
+        <Match when={!props.game.done}>
           <p>Please select a number between 1 and {N}</p>
           <div>
             <input
@@ -96,7 +91,7 @@ export const Game: Component<{ gameId: number }> = (props) => {
           <DataList />
         </Match>
       </Switch>
-      <History guesses={guesses()} />
+      <History guesses={props.game.pastGuesses} />
     </div>
   );
 };
