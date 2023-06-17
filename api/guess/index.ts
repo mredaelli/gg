@@ -1,16 +1,16 @@
 import { HttpRequest } from '@azure/functions';
 import {
-  HttpResponse,
   PoorMansControlFlow,
   getUser,
   adapt,
-  resp,
   Game,
   FunctionContext,
 } from '../common';
 
 type In = { games: Game[] };
 type Out = { updatedGame: Game };
+type GuessResponse = 'right-ho' | 'go lower' | 'go higher';
+type Res = { guessOutcome: GuessResponse };
 
 const getGame = (games: Game[] | null): Game => {
   if (!games || games.length == 0) {
@@ -41,21 +41,21 @@ const impl = (req: HttpRequest, bindings: In) => {
   }
 
   const guessedValue = getGuess(req);
-  let res: HttpResponse;
+  let guessOutcome: GuessResponse;
   let updatedGame = { ...game, tries: game.tries + 1 };
   if (guessedValue > game.number) {
-    res = resp('go lower');
+    guessOutcome = 'go lower';
   } else if (guessedValue < game.number) {
-    res = resp('go higher');
+    guessOutcome = 'go higher';
   } else {
     updatedGame = { ...updatedGame, done_at: new Date().toISOString() };
-    res = resp('right-ho');
+    guessOutcome = 'right-ho';
   }
-  return { res, outBind: { updatedGame } };
+  return { res: { guessOutcome }, outBind: { updatedGame } };
 };
 
 export default async (
   context: FunctionContext<{ games: Game; updatedGame: string }>,
   req: HttpRequest,
   games: Game[],
-): Promise<void> => adapt<In, Out>(impl, context, req, { games });
+): Promise<void> => adapt<In, Out, Res>(impl, context, req, { games });

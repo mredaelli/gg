@@ -9,20 +9,20 @@ export const getUser = async (): Promise<ClientPrincipal> => {
   return result?.clientPrincipal;
 };
 export const createGame = async (): Promise<number> => {
-  const response = await fetch(`${API}/init`, { method: 'PUT' });
+  const response = await fetch(`${API}/game`, { method: 'POST' });
   const result = await response.json();
-  return result;
+  return result.id;
 };
 
 export const sendGuess = async (
   gameId: number,
   guess: number,
 ): Promise<GuessResponse> => {
-  const response = await fetch(`${API}/guess/${gameId}`, {
+  const response = await fetch(`${API}/game/${gameId}/guess`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(guess),
   });
   const result = await response.json();
-  return result;
+  return result.guessOutcome;
 };

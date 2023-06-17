@@ -12,24 +12,24 @@ app.get("/.auth/me", (req, res) => {
 
 const games = []
 
-app.put("/init", (req, res) => {
+app.post("/game", (req, res) => {
   const gameId = games.length + 1
   const val = Math.floor(Math.random() * 9000) + 1
   console.log(val)
   games.push(val)
-  res.json(gameId);
+  res.json({ "id": gameId });
 });
 
-app.post("/guess/:gameId", (req, res) => {
+app.post("/game/:gameId/guess", (req, res) => {
   const target = games[req.params.gameId - 1];
   const actual = req.body
   console.log(actual, target)
   if (actual < target) {
-    res.json('go higher');
+    res.json({ guessOutcome: 'go higher' });
   } else if (actual > target) {
-    res.json('go lower');
+    res.json({ guessOutcome: 'go lower' });
   } else {
-    res.json('right-ho');
+    res.json({ guessOutcome: 'right-ho' });
   }
 });
 

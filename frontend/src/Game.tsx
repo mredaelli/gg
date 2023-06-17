@@ -23,7 +23,7 @@ const DataList: Component = () => (
 const History: Component<{ guesses: PastGuess[] }> = (props) => (
   <div class={styles.history}>
     <ul>
-      <For each={props.guesses.reverse()}>
+      <For each={[...props.guesses].reverse()}>
         {(item, index) => (
           <li>
             {props.guesses.length - index()}. {item.guess}: {item.response}
@@ -57,6 +57,11 @@ export const GameComponent: Component<{
     setGuessEnabled(true);
     refetch();
   };
+  const keyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      submitGuess();
+    }
+  };
 
   return (
     <div>
@@ -82,6 +87,7 @@ export const GameComponent: Component<{
               type="number"
               value={currentGuess()}
               onChange={(e) => setCurrentGuess(Number.parseInt(e.target.value))}
+              onKeyDown={keyDown}
             />
           </div>
           <p>and</p>

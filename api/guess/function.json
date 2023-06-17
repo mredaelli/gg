@@ -6,7 +6,7 @@
       "direction": "in",
       "name": "req",
       "methods": ["post"],
-      "route": "guess/{id:int}"
+      "route": "game/{id:int}/guess"
     },
     {
       "type": "http",

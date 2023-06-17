@@ -1,11 +1,20 @@
 import { Context, HttpRequest } from '@azure/functions';
 
-export const resp = (body: object | string | number, status = 200) => ({
+type JSONable = number | string | JSONable[] | { [key: string]: JSONable };
+
+export type HttpResponse<Res extends JSONable> = {
+  status: number;
+  body: Res;
+  mimetype: string;
+};
+export const resp = <Resp extends JSONable>(
+  body: Resp,
+  status = 200,
+): HttpResponse<Resp> => ({
   status,
-  body: JSON.stringify(body),
+  body,
   mimetype: 'application/json',
 });
-export type HttpResponse = ReturnType<typeof resp>;
 
 export interface FunctionContext<Out = void> extends Context {
   bindings: Out;
@@ -22,20 +31,20 @@ export class PoorMansControlFlow extends Error {
   }
 }
 
-type Impl<In, Out> = (
+type Impl<In, Out, Res extends JSONable> = (
   req: HttpRequest,
   bindIn: In,
-) => { res: HttpResponse; outBind: Out };
+) => { res: Res; outBind: Out };
 
-export const adapt = <In, Out>(
-  f: Impl<In, Out>,
+export const adapt = <In, Out, Res extends JSONable>(
+  f: Impl<In, Out, Res>,
   context: Context,
   req: HttpRequest,
   inBind: In,
 ): void => {
   try {
     const res = f(req, inBind);
-    context.res = res.res;
+    context.res = resp(res.res);
     context.bindings = Object.fromEntries(
       Object.entries(res.outBind).map(([key, value]) => [
         key,
